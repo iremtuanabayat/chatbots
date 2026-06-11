@@ -56,6 +56,12 @@ type Pages = {
       "chatId": string;
     };
   };
+  "/api/transcribe": {
+    params: {};
+  };
+  "/api/tts": {
+    params: {};
+  };
   "/api/assistants": {
     params: {};
   };
@@ -93,7 +99,7 @@ type Pages = {
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/login" | "/register" | "/chat" | "/chat/:chatId" | "/admin" | "/admin/dashboard" | "/admin/assistants" | "/admin/assistants/:assistantId" | "/admin/users" | "/admin/settings" | "/api/logout" | "/api/chat/:chatId" | "/api/assistants" | "/api/user/chats" | "/api/admin/assistants" | "/api/admin/assistants/:assistantId" | "/api/admin/assistants/:assistantId/files" | "/api/admin/users" | "/api/admin/users/:userId/access" | "/api/auth/*";
+    page: "/" | "/login" | "/register" | "/chat" | "/chat/:chatId" | "/admin" | "/admin/dashboard" | "/admin/assistants" | "/admin/assistants/:assistantId" | "/admin/users" | "/admin/settings" | "/api/logout" | "/api/chat/:chatId" | "/api/transcribe" | "/api/tts" | "/api/assistants" | "/api/user/chats" | "/api/admin/assistants" | "/api/admin/assistants/:assistantId" | "/api/admin/assistants/:assistantId/files" | "/api/admin/users" | "/api/admin/users/:userId/access" | "/api/auth/*";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -154,6 +160,14 @@ type RouteFiles = {
     id: "api-chat";
     page: "/api/chat/:chatId";
   };
+  "routes/api/transcribe.tsx": {
+    id: "routes/api/transcribe";
+    page: "/api/transcribe";
+  };
+  "routes/api/tts.tsx": {
+    id: "routes/api/tts";
+    page: "/api/tts";
+  };
   "routes/api/assistants.tsx": {
     id: "routes/api/assistants";
     page: "/api/assistants";
@@ -205,6 +219,8 @@ type RouteModules = {
   "routes/admin/settings": typeof import("./app/routes/admin/settings.tsx");
   "routes/api/logout": typeof import("./app/routes/api/logout.tsx");
   "api-chat": typeof import("./app/routes/api/chat.tsx");
+  "routes/api/transcribe": typeof import("./app/routes/api/transcribe.tsx");
+  "routes/api/tts": typeof import("./app/routes/api/tts.tsx");
   "routes/api/assistants": typeof import("./app/routes/api/assistants.tsx");
   "routes/api/user-chats": typeof import("./app/routes/api/user-chats.tsx");
   "routes/api/admin/assistants": typeof import("./app/routes/api/admin/assistants.tsx");

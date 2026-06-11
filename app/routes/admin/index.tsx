@@ -1,4 +1,4 @@
-// Redirect /admin to /admin/dashboard
+﻿// Redirect /admin to /admin/dashboard
 export async function loader() {
     return new Response(null, {
         status: 302,

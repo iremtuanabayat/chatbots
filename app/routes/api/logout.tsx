@@ -1,4 +1,4 @@
-// Server-side logout - clears all auth cookies
+﻿// Server-side logout - clears all auth cookies
 export async function action({ request }: { request: Request }) {
     // Get all cookies from request
     const cookieHeader = request.headers.get("cookie") || "";

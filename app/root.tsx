@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -100,9 +100,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center p-8">
-        <h1 className="text-6xl font-bold text-blue-500 mb-4">{message}</h1>
+        <h1 className="text-6xl font-bold text-[#21c6cc] mb-4">{message}</h1>
         <p className="text-muted-foreground mb-6">{details}</p>
-        <a href="/" className="text-blue-500 hover:underline">
+        <a href="/" className="font-bold text-[#21c6cc] hover:underline">
           Ana Sayfaya Dön
         </a>
         {stack && (

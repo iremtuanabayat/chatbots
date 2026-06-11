@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation, useNavigate } from "react-router";
+﻿import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
@@ -94,14 +94,14 @@ export default function AdminLayout({ loaderData }: ComponentProps) {
     };
 
     const Sidebar = () => (
-        <div className="flex flex-col h-full bg-card border-r">
+        <div className="flex h-full flex-col border-r border-white/10 bg-[#141524]/95 shadow-2xl shadow-black/25 backdrop-blur-xl">
             <div className="p-6">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] flex items-center justify-center">
                         <Bot className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="font-bold text-lg">FriendlyAI</h1>
+                        <h1 className="font-bold text-lg">ArisAI</h1>
                         <p className="text-xs text-muted-foreground">Admin Panel</p>
                     </div>
                 </div>
@@ -117,7 +117,7 @@ export default function AdminLayout({ loaderData }: ComponentProps) {
                                 to={item.href}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                    ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 font-medium"
+                                    ? "bg-[#21c6cc]/10 text-[#21c6cc] font-medium"
                                     : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                                     }`}
                             >
@@ -150,7 +150,7 @@ export default function AdminLayout({ loaderData }: ComponentProps) {
                 )}
 
                 <div className="flex items-center gap-3 p-2 rounded-lg bg-secondary/50">
-                    <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] flex items-center justify-center text-white font-medium">
                         {user.name?.charAt(0) || user.email?.charAt(0) || "A"}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -172,19 +172,19 @@ export default function AdminLayout({ loaderData }: ComponentProps) {
     );
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="aris-app-surface min-h-screen">
             {/* Desktop Sidebar */}
             <aside className="fixed left-0 top-0 h-full w-72 hidden lg:block">
                 <Sidebar />
             </aside>
 
             {/* Mobile Header */}
-            <header className="lg:hidden fixed top-0 left-0 right-0 h-16 border-b bg-background/80 backdrop-blur-md z-50 flex items-center px-4 justify-between">
+            <header className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between border-b border-white/10 bg-[#141524]/90 px-4 backdrop-blur-md lg:hidden">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] flex items-center justify-center">
                         <Bot className="w-5 h-5 text-white" />
                     </div>
-                    <span className="font-bold">FriendlyAI Admin</span>
+                    <span className="font-bold">ArisAI Admin</span>
                 </div>
                 <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                     {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -193,8 +193,8 @@ export default function AdminLayout({ loaderData }: ComponentProps) {
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="lg:hidden fixed inset-0 z-40 bg-background/80 backdrop-blur-sm pt-16">
-                    <div className="h-full bg-background border-r w-4/5 max-w-sm shadow-2xl">
+                <div className="fixed inset-0 z-40 bg-background/80 pt-16 backdrop-blur-sm lg:hidden">
+                    <div className="h-full w-4/5 max-w-sm border-r border-white/10 bg-[#141524] shadow-2xl">
                         <Sidebar />
                     </div>
                 </div>

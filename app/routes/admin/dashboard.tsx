@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+﻿import { Link } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Bot, Users, MessageSquare, TrendingUp, ArrowRight, Plus } from "lucide-react";
@@ -60,8 +60,8 @@ export default function AdminDashboard({ loaderData }: ComponentProps) {
             title: "Toplam Kullanıcı",
             value: stats.totalUsers,
             icon: Users,
-            color: "text-blue-600",
-            bg: "bg-blue-500/10",
+            color: "text-[#21c6cc]",
+            bg: "bg-[#21c6cc]/10",
         },
         {
             title: "Asistanlar",
@@ -90,7 +90,7 @@ export default function AdminDashboard({ loaderData }: ComponentProps) {
         <div className="space-y-8">
             <div>
                 <h1 className="text-3xl font-bold">Dashboard</h1>
-                <p className="text-muted-foreground mt-1">FriendlyAI yönetim paneline hoş geldiniz</p>
+                <p className="text-muted-foreground mt-1">ArisAI yönetim paneline hoş geldiniz</p>
             </div>
 
             {/* Stats Grid */}
@@ -117,15 +117,15 @@ export default function AdminDashboard({ loaderData }: ComponentProps) {
                 {/* Quick Actions */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Hızlı İşlemler</CardTitle>
-                        <CardDescription>Sık kullanılan işlemlere erişin</CardDescription>
+                        <CardTitle>Hızlı Islemler</CardTitle>
+                        <CardDescription>Sık kullanılan islemlere erisin</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         <Link to="/admin/assistants">
                             <Button variant="outline" className="w-full justify-between group">
                                 <span className="flex items-center gap-2">
                                     <Plus className="w-4 h-4" />
-                                    Yeni Asistan Oluştur
+                                    Yeni Asistan oluştur
                                 </span>
                                 <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </Button>
@@ -189,7 +189,7 @@ export default function AdminDashboard({ loaderData }: ComponentProps) {
                                 <Link to="/admin/assistants">
                                     <Button size="sm" className="mt-3">
                                         <Plus className="w-4 h-4 mr-2" />
-                                        İlk Asistanı Oluştur
+                                        İlk Asistanı oluştur
                                     </Button>
                                 </Link>
                             </div>

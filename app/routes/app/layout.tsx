@@ -1,10 +1,9 @@
-import { Outlet, Link, useLocation, useNavigate } from "react-router";
+﻿import { Outlet, Link, useLocation, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import {
-    Bot,
     MessageSquare,
     Plus,
     Menu,
@@ -17,6 +16,7 @@ import {
     Trash2,
     Settings,
 } from "lucide-react";
+import { BrandMark } from "~/components/brand-mark";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { auth } from "~/lib/auth.server";
@@ -166,8 +166,8 @@ export default function AppLayout({ loaderData }: ComponentProps) {
                 <div className="p-2 sm:p-3 lg:p-4 border-b border-sidebar-border">
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
                         <Link to="/chat" className="flex items-center gap-1 sm:gap-2 font-bold text-base sm:text-lg lg:text-lg text-sidebar-foreground">
-                            <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
-                            <span className="hidden sm:inline">FriendlyAI</span>
+                            <BrandMark size="sm" />
+                            <span className="hidden sm:inline">ArisAI</span>
                         </Link>
                         {!mobile && (
                             <Button variant="ghost" size="icon" onClick={() => setIsSidebarCollapsed(true)} className="h-7 w-7 sm:h-8 sm:w-8">
@@ -176,7 +176,7 @@ export default function AppLayout({ loaderData }: ComponentProps) {
                         )}
                     </div>
                     <Link to="/chat" onClick={() => mobile && setSidebarOpen(false)}>
-                        <Button className="w-full gap-1 sm:gap-2 text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white">
+                        <Button className="w-full gap-1 sm:gap-2 bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] text-xs sm:text-sm font-bold text-white hover:brightness-110">
                             <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                             <span className="hidden sm:inline">Yeni Sohbet</span>
                             <span className="sm:hidden">Yeni</span>
@@ -189,13 +189,13 @@ export default function AppLayout({ loaderData }: ComponentProps) {
             {!mobile && isSidebarCollapsed && (
                 <div className="p-2 sm:p-3 lg:p-4 flex flex-col items-center gap-2 sm:gap-3 border-b border-sidebar-border">
                     <Link to="/chat">
-                        <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
+                        <BrandMark size="sm" />
                     </Link>
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link to="/chat">
-                                    <Button size="icon" className="h-8 w-8 sm:h-9 sm:w-9 bg-blue-600 hover:bg-blue-700 text-white">
+                                    <Button size="icon" className="h-8 w-8 bg-gradient-to-r from-[#8d36ff] to-[#21c6cc] text-white hover:brightness-110 sm:h-9 sm:w-9">
                                         <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                                     </Button>
                                 </Link>
@@ -300,7 +300,7 @@ export default function AppLayout({ loaderData }: ComponentProps) {
                 {/* User Info & Logout */}
                 {!isSidebarCollapsed ? (
                     <div className="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg bg-sidebar-accent/30">
-                        <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium text-xs sm:text-sm shrink-0">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] text-xs font-bold text-white sm:h-9 sm:w-9 sm:text-sm">
                             {user.name?.charAt(0) || user.email?.charAt(0) || "U"}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -329,8 +329,8 @@ export default function AppLayout({ loaderData }: ComponentProps) {
                     <Link to="/admin/dashboard">
                         <Button variant="outline" size="sm" className="w-full gap-1 sm:gap-2 text-xs sm:text-sm">
                             <Settings className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                            <span className="hidden sm:inline">Yönetim Paneli</span>
-                            <span className="sm:hidden">Yönetim</span>
+                            <span className="hidden sm:inline">yönetim Paneli</span>
+                            <span className="sm:hidden">yönetim</span>
                         </Button>
                     </Link>
                 )}
@@ -339,7 +339,7 @@ export default function AppLayout({ loaderData }: ComponentProps) {
     );
 
     return (
-        <div className="flex h-screen bg-background overflow-hidden">
+        <div className="aris-app-surface flex h-screen overflow-hidden">
             {/* Desktop Sidebar */}
             <aside
                 className={cn(
@@ -360,11 +360,11 @@ export default function AppLayout({ loaderData }: ComponentProps) {
             {/* Main Content */}
             <main className="flex-1 flex flex-col relative w-full h-full overflow-hidden">
                 {/* Mobile Header */}
-                <div className="md:hidden flex items-center justify-between p-3 sm:p-4 border-b bg-background z-10 gap-2">
+                <div className="z-10 flex items-center justify-between gap-2 border-b border-white/10 bg-[#141524]/90 p-3 backdrop-blur-md sm:p-4 md:hidden">
                     <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9" onClick={() => setSidebarOpen(true)}>
                         <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
                     </Button>
-                    <span className="font-semibold text-sm sm:text-base">FriendlyAI</span>
+                    <span className="text-sm font-bold sm:text-base">ArisAI</span>
                     <div className="w-8 sm:w-9" />
                 </div>
 

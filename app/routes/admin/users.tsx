@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+﻿import { Link } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
@@ -56,7 +56,7 @@ export default function AdminUsers({ loaderData }: ComponentProps) {
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
+                            <div className="w-12 h-12 rounded-xl bg-[#21c6cc]/10 flex items-center justify-center text-[#21c6cc]">
                                 <Users className="w-6 h-6" />
                             </div>
                             <div>
@@ -108,7 +108,7 @@ export default function AdminUsers({ loaderData }: ComponentProps) {
                                     key={user.id}
                                     className="flex items-center gap-4 p-4 rounded-lg hover:bg-secondary transition-colors"
                                 >
-                                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                                    <div className="w-10 h-10 rounded-full bg-[#21c6cc] flex items-center justify-center text-white font-medium">
                                         {user.name?.charAt(0) || user.email?.charAt(0) || "U"}
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -135,7 +135,7 @@ export default function AdminUsers({ loaderData }: ComponentProps) {
                             <Users className="w-16 h-16 mx-auto text-muted-foreground/20 mb-4" />
                             <h3 className="text-lg font-semibold mb-2">Henüz Kullanıcı Yok</h3>
                             <p className="text-muted-foreground">
-                                Kullanıcılar kayıt oldukça burada görünecekler
+                                Kullanıcılar kayit oldukça burada görünecekler
                             </p>
                         </div>
                     )}

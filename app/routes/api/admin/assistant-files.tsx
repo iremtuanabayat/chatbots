@@ -1,4 +1,4 @@
-import { auth } from "~/lib/auth.server";
+﻿import { auth } from "~/lib/auth.server";
 import { prisma } from "~/lib/db.server";
 import { uploadFileToVectorStore, deleteVectorStoreFile, getVectorStoreFiles, createVectorStore } from "~/lib/openai.server";
 

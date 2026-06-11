@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+﻿import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useSearchParams, useNavigate, useRevalidator } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
@@ -17,8 +17,12 @@ import {
     ChevronDown,
     Check,
 } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "~/lib/utils";
 import { MarkdownRenderer } from "~/components/markdown-renderer";
+import { AutoSpeakToggle, MessageSpeaker } from "~/components/message-speaker";
+import { VoiceInputButton } from "~/components/voice-input-button";
+import { useSpeech } from "~/hooks/use-speech";
 import { auth } from "~/lib/auth.server";
 import { prisma } from "~/lib/db.server";
 
@@ -136,10 +140,14 @@ export default function ChatPage({ loaderData }: ComponentProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [streamingContent, setStreamingContent] = useState("");
     const [localMessages, setLocalMessages] = useState<MessageData[]>(chat?.messages || []);
+    const [voiceMode, setVoiceMode] = useState(false);
+
+    const { isSpeaking, speakingId, speak } = useSpeech();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const scrollAreaRef = useRef<HTMLDivElement>(null);
+    const voiceBaseRef = useRef("");
 
     // Update local messages when chat changes
     useEffect(() => {
@@ -172,12 +180,36 @@ export default function ChatPage({ loaderData }: ComponentProps) {
         }
     }, [input]);
 
-    const handleSend = async () => {
-        if (!input.trim() || isLoading || !selectedAssistant) return;
+    const handleVoiceRecordingStart = () => {
+        voiceBaseRef.current = input.trim();
+    };
 
-        const userMessageContent = input.trim();
-        setInput("");
-        if (textareaRef.current) textareaRef.current.style.height = "auto";
+    const handleVoiceLiveChange = (recognized: string) => {
+        const base = voiceBaseRef.current;
+        setInput(base ? `${base} ${recognized}`.trim() : recognized);
+    };
+
+    const handleVoiceTranscript = (recognized: string) => {
+        const base = voiceBaseRef.current;
+        const full = base ? `${base} ${recognized}`.trim() : recognized;
+        voiceBaseRef.current = "";
+
+        if (voiceMode) {
+            void handleSend(full);
+            return;
+        }
+
+        setInput(full);
+    };
+
+    const handleSend = async (overrideContent?: string) => {
+        const userMessageContent = (overrideContent ?? input).trim();
+        if (!userMessageContent || isLoading || !selectedAssistant) return;
+
+        if (!overrideContent) {
+            setInput("");
+            if (textareaRef.current) textareaRef.current.style.height = "auto";
+        }
 
         // Optimistic update
         const tempUserMessage: MessageData = {
@@ -265,6 +297,10 @@ export default function ChatPage({ loaderData }: ComponentProps) {
             };
             setLocalMessages(prev => [...prev, assistantMessage]);
 
+            if (voiceMode && assistantContent) {
+                void speak(assistantContent, assistantMessage.id);
+            }
+
             // Revalidate to sync with server
             revalidator.revalidate();
 
@@ -295,8 +331,8 @@ export default function ChatPage({ loaderData }: ComponentProps) {
         return (
             <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-2xl mx-auto w-full">
                 <div className="mb-8 relative">
-                    <div className="absolute -inset-4 bg-blue-500/10 rounded-full blur-2xl" />
-                    <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/25">
+                    <div className="absolute -inset-4 bg-[#21c6cc]/10 rounded-full blur-2xl" />
+                    <div className="relative w-20 h-20 bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/25">
                         <Bot className="w-10 h-10 text-white" />
                     </div>
                 </div>
@@ -316,14 +352,14 @@ export default function ChatPage({ loaderData }: ComponentProps) {
         return (
             <div className="flex-1 flex flex-col items-center justify-center p-4 max-w-2xl mx-auto w-full">
                 <div className="mb-8 relative">
-                    <div className="absolute -inset-4 bg-blue-500/10 rounded-full blur-2xl" />
-                    <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/25">
+                    <div className="absolute -inset-4 bg-[#21c6cc]/10 rounded-full blur-2xl" />
+                    <div className="relative w-20 h-20 bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/25">
                         <Sparkles className="w-10 h-10 text-white" />
                     </div>
                 </div>
 
                 <h2 className="text-2xl font-bold mb-2 text-center">
-                    Merhaba! Ben FriendlyAI
+                    Merhaba! Ben ArisAI
                 </h2>
                 <p className="text-muted-foreground text-center mb-8 max-w-md">
                     Size nasıl yardımcı olabilirim?
@@ -331,7 +367,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
 
                 {/* Input Box with Assistant Selector */}
                 <div className="w-full max-w-xl">
-                    <div className="relative bg-card rounded-2xl border shadow-lg shadow-blue-500/5 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                    <div className="relative bg-card rounded-2xl border shadow-lg shadow-cyan-500/10 focus-within:ring-2 focus-within:ring-[#21c6cc]/20 focus-within:border-[#21c6cc] transition-all">
                         <Textarea
                             ref={textareaRef}
                             value={input}
@@ -380,26 +416,41 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                                                 )}
                                             </div>
                                             {selectedAssistantId === assistant.id && (
-                                                <Check className="w-4 h-4 text-blue-600 shrink-0" />
+                                                <Check className="w-4 h-4 text-[#21c6cc] shrink-0" />
                                             )}
                                         </DropdownMenuItem>
                                     ))}
                                 </DropdownMenuContent>
                             </DropdownMenu>
 
-                            <Button
-                                onClick={handleSend}
-                                disabled={!input.trim() || isLoading}
-                                size="icon"
-                                className={cn(
-                                    "h-8 w-8 rounded-lg transition-all shrink-0",
-                                    input.trim()
-                                        ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/25"
-                                        : "bg-muted text-muted-foreground"
-                                )}
-                            >
-                                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <SendHorizontal className="w-4 h-4" />}
-                            </Button>
+                            <div className="flex items-center gap-1">
+                                <AutoSpeakToggle
+                                    enabled={voiceMode}
+                                    onToggle={() => setVoiceMode((prev) => !prev)}
+                                    disabled={isLoading}
+                                />
+                                <VoiceInputButton
+                                    onRecordingStart={handleVoiceRecordingStart}
+                                    onLiveChange={handleVoiceLiveChange}
+                                    onTranscript={handleVoiceTranscript}
+                                    onError={(message) => toast.error(message)}
+                                    disabled={isLoading}
+                                    className="h-8 w-8 rounded-lg"
+                                />
+                                <Button
+                                    onClick={() => handleSend()}
+                                    disabled={!input.trim() || isLoading}
+                                    size="icon"
+                                    className={cn(
+                                        "h-8 w-8 rounded-lg transition-all shrink-0",
+                                        input.trim()
+                                            ? "bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110 text-white shadow-md shadow-cyan-500/25"
+                                            : "bg-muted text-muted-foreground"
+                                    )}
+                                >
+                                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <SendHorizontal className="w-4 h-4" />}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -436,7 +487,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                         <Bot className="w-5 h-5" />
                     </div>
                     <div>
-                        <h2 className="font-semibold">{chat?.assistant?.name || selectedAssistant?.name || "FriendlyAI"}</h2>
+                        <h2 className="font-semibold">{chat?.assistant?.name || selectedAssistant?.name || "ArisAI"}</h2>
                         <p className="text-xs text-muted-foreground">{chat?.title || "Yeni Sohbet"}</p>
                     </div>
                 </div>
@@ -469,12 +520,22 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                                 className={cn(
                                     "max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed",
                                     message.role === "user"
-                                        ? "bg-blue-600 text-white rounded-tr-sm whitespace-pre-wrap"
+                                        ? "bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] text-white rounded-tr-sm whitespace-pre-wrap"
                                         : "bg-card border rounded-tl-sm"
                                 )}
                             >
                                 {message.role === "assistant" ? (
-                                    <MarkdownRenderer content={message.content} />
+                                    <div className="space-y-2">
+                                        <MarkdownRenderer content={message.content} />
+                                        <div className="flex justify-end">
+                                            <MessageSpeaker
+                                                messageId={message.id}
+                                                content={message.content}
+                                                isActive={speakingId === message.id && isSpeaking}
+                                                onSpeak={speak}
+                                            />
+                                        </div>
+                                    </div>
                                 ) : (
                                     message.content
                                 )}
@@ -502,7 +563,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                             </div>
                             <div className="max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed bg-card border rounded-tl-sm">
                                 <MarkdownRenderer content={streamingContent} />
-                                <span className="inline-block w-1 h-4 bg-blue-500 ml-1 animate-pulse align-middle" />
+                                <span className="inline-block w-1 h-4 bg-[#21c6cc] ml-1 animate-pulse align-middle" />
                             </div>
                         </div>
                     )}
@@ -510,14 +571,14 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                     {/* Loading indicator */}
                     {isLoading && !streamingContent && (
                         <div className="flex gap-3 justify-start">
-                            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-blue-100 dark:bg-blue-900/30 text-blue-600">
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-[#21c6cc]/10 text-[#21c6cc]">
                                 <Bot className="w-5 h-5" />
                             </div>
                             <div className="flex items-center gap-2 p-4 rounded-xl bg-card border rounded-tl-sm">
                                 <span className="flex gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.3s]" />
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.15s]" />
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#21c6cc] animate-bounce [animation-delay:-0.3s]" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#21c6cc] animate-bounce [animation-delay:-0.15s]" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#21c6cc] animate-bounce" />
                                 </span>
                                 <span className="text-xs text-muted-foreground">Yazıyor...</span>
                             </div>
@@ -530,7 +591,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
 
             {/* Input Area - Sticky at bottom */}
             <div className="sticky bottom-0 left-0 right-0 p-3 md:p-4 bg-background/95 backdrop-blur-md border-t safe-area-bottom z-20">
-                <div className="max-w-3xl mx-auto relative bg-card rounded-2xl border shadow-lg shadow-blue-500/5 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="max-w-3xl mx-auto relative bg-card rounded-2xl border shadow-lg shadow-cyan-500/10 focus-within:ring-2 focus-within:ring-[#21c6cc]/20 focus-within:border-[#21c6cc] transition-all">
                     <Textarea
                         ref={textareaRef}
                         value={input}
@@ -550,7 +611,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                                 >
                                     <Bot className="w-3 h-3" />
                                 </div>
-                                <span>{chat?.assistant?.name || "FriendlyAI"}</span>
+                                <span>{chat?.assistant?.name || "ArisAI"}</span>
                             </div>
                         ) : (
                             /* Assistant Selector for new chat */
@@ -591,7 +652,7 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                                                 )}
                                             </div>
                                             {selectedAssistantId === assistant.id && (
-                                                <Check className="w-4 h-4 text-blue-600 shrink-0" />
+                                                <Check className="w-4 h-4 text-[#21c6cc] shrink-0" />
                                             )}
                                         </DropdownMenuItem>
                                     ))}
@@ -599,19 +660,33 @@ export default function ChatPage({ loaderData }: ComponentProps) {
                             </DropdownMenu>
                         )}
 
-                        <Button
-                            onClick={handleSend}
-                            disabled={!input.trim() || isLoading}
-                            size="icon"
-                            className={cn(
-                                "h-9 w-9 rounded-xl transition-all shrink-0",
-                                input.trim()
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                    : "bg-muted text-muted-foreground"
-                            )}
-                        >
-                            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <SendHorizontal className="w-4 h-4" />}
-                        </Button>
+                        <div className="flex items-center gap-1">
+                            <AutoSpeakToggle
+                                enabled={voiceMode}
+                                onToggle={() => setVoiceMode((prev) => !prev)}
+                                disabled={isLoading}
+                            />
+                            <VoiceInputButton
+                                onRecordingStart={handleVoiceRecordingStart}
+                                onLiveChange={handleVoiceLiveChange}
+                                onTranscript={handleVoiceTranscript}
+                                onError={(message) => toast.error(message)}
+                                disabled={isLoading}
+                            />
+                            <Button
+                                onClick={() => handleSend()}
+                                disabled={!input.trim() || isLoading}
+                                size="icon"
+                                className={cn(
+                                    "h-9 w-9 rounded-xl transition-all shrink-0",
+                                    input.trim()
+                                        ? "bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110 text-white"
+                                        : "bg-muted text-muted-foreground"
+                                )}
+                            >
+                                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <SendHorizontal className="w-4 h-4" />}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -28,6 +28,8 @@ export default [
     ...prefix("api", [
         route("logout", "routes/api/logout.tsx"),
         route("chat/:chatId", "routes/api/chat.tsx", { id: "api-chat" }),
+        route("transcribe", "routes/api/transcribe.tsx"),
+        route("tts", "routes/api/tts.tsx"),
         route("assistants", "routes/api/assistants.tsx"),
         route("user/chats", "routes/api/user-chats.tsx"),
 

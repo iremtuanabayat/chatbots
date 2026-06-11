@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useRevalidator } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -59,7 +59,7 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [systemInstruction, setSystemInstruction] = useState(
-        "Sen yardımcı bir AI asistansın. Kullanıcıların sorularına açık ve anlaşılır cevaplar ver."
+        "Sen yardımcı bir AI asistanısın. Kullanıcıların sorularına Açık ve anlaşılır cevaplar ver."
     );
     const [model, setModel] = useState("gpt-4.1-mini");
     const [color, setColor] = useState("#3B82F6");
@@ -111,14 +111,14 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
 
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+                        <Button className="gap-2 bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110">
                             <Plus className="w-4 h-4" />
                             Yeni Asistan
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-lg">
                         <DialogHeader>
-                            <DialogTitle>Yeni Asistan Oluştur</DialogTitle>
+                            <DialogTitle>Yeni Asistan oluştur</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-4 mt-4">
                             <div className="space-y-2">
@@ -126,7 +126,7 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                                 <Input
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    placeholder="Örn: Genel Asistan"
+                                    placeholder="Orn: Genel Asistan"
                                 />
                             </div>
 
@@ -135,7 +135,7 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                                 <Input
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Kısa bir açıklama"
+                                    placeholder="Kısa bir Açıklama"
                                 />
                             </div>
 
@@ -170,7 +170,7 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                                         <button
                                             key={c}
                                             onClick={() => setColor(c)}
-                                            className={`w-8 h-8 rounded-full transition-all ${color === c ? "ring-2 ring-offset-2 ring-blue-600" : ""
+                                            className={`w-8 h-8 rounded-full transition-all ${color === c ? "ring-2 ring-offset-2 ring-[#21c6cc]" : ""
                                                 }`}
                                             style={{ backgroundColor: c }}
                                         />
@@ -187,22 +187,22 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                                     className="w-4 h-4"
                                 />
                                 <Label htmlFor="isPublic" className="cursor-pointer">
-                                    Herkese Açık (Tüm kullanıcılar erişebilir)
+                                    Herkese Açık (Tüm Kullanıcılar erişebilir)
                                 </Label>
                             </div>
 
                             <Button
                                 onClick={handleCreate}
                                 disabled={!name.trim() || isCreating}
-                                className="w-full bg-blue-600 hover:bg-blue-700"
+                                className="w-full bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110"
                             >
                                 {isCreating ? (
                                     <>
                                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                        Oluşturuluyor...
+                                        oluşturuluyor...
                                     </>
                                 ) : (
-                                    "Asistan Oluştur"
+                                    "Asistan oluştur"
                                 )}
                             </Button>
                         </div>
@@ -215,7 +215,7 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {assistants.map((assistant) => (
                         <Link key={assistant.id} to={`/admin/assistants/${assistant.id}`}>
-                            <Card className="h-full hover:border-blue-500/50 transition-colors cursor-pointer">
+                            <Card className="h-full hover:border-[#21c6cc]/50 transition-colors cursor-pointer">
                                 <CardContent className="pt-6">
                                     <div className="flex items-start gap-4">
                                         <div
@@ -258,9 +258,9 @@ export default function AdminAssistants({ loaderData }: ComponentProps) {
                         <p className="text-muted-foreground mb-6">
                             İlk AI asistanınızı oluşturarak başlayın
                         </p>
-                        <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-blue-600 hover:bg-blue-700">
+                        <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110">
                             <Plus className="w-4 h-4" />
-                            İlk Asistanı Oluştur
+                            İlk Asistanı oluştur
                         </Button>
                     </CardContent>
                 </Card>

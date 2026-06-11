@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useRevalidator } from "react-router";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -279,7 +279,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                     body: JSON.stringify({ assistantId: assistant.id }),
                 });
             }
-            toast.success(`${selectedUsers.length} kullanıcıya erişim verildi`);
+            toast.success(`${selectedUsers.length} Kullanıcıya erişim verildi`);
             setAssignDialogOpen(false);
             setSelectedUsers([]);
             setUserSearch("");
@@ -301,10 +301,10 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
             );
 
             if (response.ok) {
-                toast.success("Erişim kaldırıldı");
+                toast.success("erişim kaldırıldı");
                 revalidator.revalidate();
             } else {
-                toast.error("Erişim kaldırılamadı");
+                toast.error("erişim kaldırılamadı");
             }
         } catch (error) {
             toast.error("Bir hata oluştu");
@@ -375,7 +375,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                 <Card>
                     <CardContent className="pt-6">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600">
+                            <div className="w-10 h-10 rounded-lg bg-[#21c6cc]/10 flex items-center justify-center text-[#21c6cc]">
                                 <Bot className="w-5 h-5" />
                             </div>
                             <div>
@@ -446,7 +446,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                             <Input
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Kısa bir açıklama"
+                                placeholder="Kısa bir Açıklama"
                             />
                         </div>
 
@@ -466,7 +466,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                     <button
                                         key={c}
                                         onClick={() => setColor(c)}
-                                        className={`w-8 h-8 rounded-full transition-all ${color === c ? "ring-2 ring-offset-2 ring-blue-600" : ""
+                                        className={`w-8 h-8 rounded-full transition-all ${color === c ? "ring-2 ring-offset-2 ring-[#21c6cc]" : ""
                                             }`}
                                         style={{ backgroundColor: c }}
                                     />
@@ -499,7 +499,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                             <Button
                                 onClick={handleSave}
                                 disabled={isSaving}
-                                className="gap-2 bg-blue-600 hover:bg-blue-700"
+                                className="gap-2 bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110"
                             >
                                 {isSaving ? (
                                     <>
@@ -589,7 +589,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                             className="flex items-center justify-between p-3 border rounded-lg bg-background hover:bg-muted/50 transition-colors"
                                         >
                                             <div className="flex items-center gap-3 min-w-0">
-                                                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
+                                                <div className="w-10 h-10 rounded-lg bg-[#21c6cc]/10 flex items-center justify-center text-[#21c6cc] shrink-0">
                                                     <FileText className="w-5 h-5" />
                                                 </div>
                                                 <div className="min-w-0">
@@ -640,10 +640,10 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                             <div>
                                 <CardTitle className="flex items-center gap-2">
                                     <Users className="w-5 h-5" />
-                                    Kullanıcı Erişimi
+                                    Kullanıcı erişimi
                                 </CardTitle>
                                 <CardDescription className="mt-1">
-                                    Bu asistan özel. Sadece aşağıdaki kullanıcılar erişebilir.
+                                    Bu asistan özel. Sadece aşağıdaki Kullanıcılar erişebilir.
                                 </CardDescription>
                             </div>
                             <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
@@ -678,11 +678,11 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                                             className={cn(
                                                                 "w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors",
                                                                 selectedUsers.includes(user.id)
-                                                                    ? "bg-blue-500/10 border border-blue-500/30"
+                                                                    ? "bg-[#21c6cc]/10 border border-[#21c6cc]/30"
                                                                     : "hover:bg-muted"
                                                             )}
                                                         >
-                                                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium text-sm shrink-0">
+                                                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] flex items-center justify-center text-white font-medium text-sm shrink-0">
                                                                 {user.name?.charAt(0) || user.email.charAt(0)}
                                                             </div>
                                                             <div className="flex-1 min-w-0">
@@ -692,7 +692,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                                                 </p>
                                                             </div>
                                                             {selectedUsers.includes(user.id) && (
-                                                                <Check className="w-5 h-5 text-blue-600 shrink-0" />
+                                                                <Check className="w-5 h-5 text-[#21c6cc] shrink-0" />
                                                             )}
                                                         </button>
                                                     ))}
@@ -701,13 +701,13 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                         ) : (
                                             <div className="text-center py-8 text-muted-foreground border rounded-lg">
                                                 <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                                <p>Atanabilecek kullanıcı bulunamadı</p>
+                                                <p>Atanabilecek Kullanıcı bulunamadı</p>
                                             </div>
                                         )}
 
                                         {selectedUsers.length > 0 && (
                                             <p className="text-sm text-muted-foreground">
-                                                {selectedUsers.length} kullanıcı seçildi
+                                                {selectedUsers.length} Kullanıcı seçildi
                                             </p>
                                         )}
                                     </div>
@@ -725,7 +725,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                             ) : (
                                                 <Plus className="w-4 h-4" />
                                             )}
-                                            Erişim Ver
+                                            erişim Ver
                                         </Button>
                                     </DialogFooter>
                                 </DialogContent>
@@ -741,7 +741,7 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                                         className="flex items-center justify-between p-3 border rounded-lg bg-background"
                                     >
                                         <div className="flex items-center gap-3 min-w-0">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-medium shrink-0">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8d36ff] to-[#21c6cc] flex items-center justify-center text-white font-medium shrink-0">
                                                 {access.user.name?.charAt(0) || access.user.email.charAt(0)}
                                             </div>
                                             <div className="min-w-0">
@@ -770,9 +770,9 @@ export default function AssistantDetail({ loaderData }: ComponentProps) {
                         ) : (
                             <div className="text-center py-12 text-muted-foreground">
                                 <Users className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                                <p className="font-medium">Henüz kullanıcı atanmamış</p>
+                                <p className="font-medium">Henüz Kullanıcı atanmamış</p>
                                 <p className="text-sm mt-1">
-                                    Erişim vermek için kullanıcı atayın.
+                                    erişim vermek için Kullanıcı atayın.
                                 </p>
                             </div>
                         )}

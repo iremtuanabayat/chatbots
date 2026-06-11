@@ -1,4 +1,4 @@
-import { Bot } from "lucide-react";
+﻿import { Bot } from "lucide-react";
 
 type BrandMarkProps = {
   size?: "sm" | "md" | "lg";

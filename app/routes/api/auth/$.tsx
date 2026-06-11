@@ -1,4 +1,4 @@
-import { auth } from "~/lib/auth.server";
+﻿import { auth } from "~/lib/auth.server";
 
 export async function loader({ request }: { request: Request }) {
     return auth.handler(request);

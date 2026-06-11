@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -24,7 +24,7 @@ export async function loader(): Promise<LoaderData> {
         settings = await prisma.appSettings.create({
             data: {
                 id: "default",
-                appName: "FriendlyAI",
+                appName: "ArisAI",
                 theme: "blue",
             },
         });
@@ -75,14 +75,14 @@ export default function AdminSettings({ loaderData }: ComponentProps) {
                             <Input
                                 value={appName}
                                 onChange={(e) => setAppName(e.target.value)}
-                                placeholder="FriendlyAI"
+                                placeholder="ArisAI"
                             />
                         </div>
 
                         <Button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="gap-2 bg-blue-600 hover:bg-blue-700"
+                            className="gap-2 bg-gradient-to-r from-[#8d36ff] via-[#d84fd2] to-[#21c6cc] hover:brightness-110"
                         >
                             {isSaving ? (
                                 <>
